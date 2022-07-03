@@ -1,0 +1,84 @@
+﻿@page
+@model MyAutoService.Pages.Services.DetailsModel
+@{
+}
+<div class="container pt-4 pb-2 row border">
+    <div class="col-6">
+        <h2 class="text-info py-2">جزئیات سرویس</h2>
+    </div>
+    <div class="col-3 offset-3 text-right py-2">
+        <a asp-page="/Services/History" asp-route-carId="@Model.ServiceHeader.CarId" class="btn btn-outline-success form-control">
+            بازگشت به لیست
+        </a>
+    </div>
+</div>
+
+<div class="container pt-5">
+    <div class="card">
+        <div class="card-header bg-dark text-light ml-0 row container">
+            <div class="col-1 text-center pt-3 text-white-50">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="col-5">
+                <label class="text-info">
+                    @Model.ServiceHeader.Car.ApplicationUser.Name
+                </label>
+                <br />
+                <label class="text-info">
+                    @Model.ServiceHeader.Car.ApplicationUser.Email / @Model.ServiceHeader.Car.ApplicationUser.PhoneNumber
+                </label>
+            </div>
+            <div class="col-5">
+                <label class="text-info">
+                    @Model.ServiceHeader.Car.Model / @Model.ServiceHeader.Car.Color
+                </label>
+                <br />
+                <label class="text-info">
+                    @Model.ServiceHeader.Car.Name
+                </label>
+            </div>
+            <div class="col-1 text-center pt-3 text-white-50">
+                <i class="fas fa-car"></i>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row pt-3">
+                <div class="col-5 px-4 pb-2">
+                    <div class="row">
+                        <div class="col-3">
+                            <label asp-for="ServiceHeader.Miles" class="form-control" style="border: none"></label>
+                        </div>
+                        <div class="col-9">
+                            <input asp-for="ServiceHeader.Miles" readonly class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <textarea asp-for="ServiceHeader.Description" readonly class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-7">
+                    <table class="table table-striped border">
+                        <tr class="table-secondary">
+                            <th>
+                                @Html.DisplayNameFor(m => m.serviceDetails[0].ServiceName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(m => m.serviceDetails[0].ServicePrice)
+                            </th>
+                        </tr>
+                        @foreach (var item in Model.serviceDetails)
+                        {
+                            <tr>
+                                <td>@item.ServiceName</td>
+                                <td class="text-success">@item.ServicePrice.ToString("#,0 تومان")</td>
+
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,69 @@
+﻿@page
+@using MyAutoService.Utlities;
+@model MyAutoService.Pages.ServiceTypes.IndexModel
+@{
+}
+<h1>مدیریت خدمات اتوسرویس نیما</h1>
+<hr />
+<div class="border" style="background-color: white">
+    <div class="row p-3">
+        <div class="col-6">
+            <h2 class="text-info">لیست سرویس های ما</h2>
+        </div>
+        <div class="col-6 text-right">
+            <a asp-page="Create" class="btn btn-info">
+                افزودن سرویس جدید
+                <i class="fas fa-plus fa-sm"></i>
+            </a>
+        </div>
+    </div>
+</div>
+<br />
+<div>
+    @if (Model.ServiceTypes.Count == 0)
+    {
+        <div class="alert alert-warning">
+            سرویسی جهت نمایش تعریف نشده است ، میتوانید از طریق
+            <a asp-page="Create" class="btn btn-link">
+                افزودن سرویس جدید
+
+            </a>
+            سرویس جدید ایجاد کنید
+        </div>
+    }
+    else
+    {
+        <table class="table table-striped border">
+            <tr class="table-secondary">
+                <th>عنوان سرویس</th>
+                <th>قسمت سرویس</th>
+                <th></th>
+            </tr>
+            @foreach (var item in Model.ServiceTypes)
+            {
+                <tr>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.Price.ToToman()
+                    </td>
+                    <td style="width: 150px">
+                        <div class="btn-group" role="group">
+                            <a class="btn btn-outline-primary" asp-page="Edit" asp-route-Id="@item.Id">
+                                <i class="fas fa-edit fa-sm"></i>
+                            </a>
+                            <a class="btn btn-outline-success" asp-page="Details" asp-route-Id="@item.Id">
+                                <i class="fas fa-list-alt fa-sm"></i>
+                            </a>
+                            <a class="btn btn-outline-danger" asp-page="Delete" asp-route-Id="@item.Id">
+                                <i class="fas fa-trash fa-sm"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+            
+        </table>
+    }
+</div>

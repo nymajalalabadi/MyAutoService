@@ -1,0 +1,140 @@
+﻿@page
+@using MyAutoService.Utlities
+@model MyAutoService.Pages.Cars.IndexModel
+@{
+}
+<h2 class="text-info py-2">
+    لیست ماشین های @Model.CarAndCustomerViewModel.User.Name
+</h2>
+<div class="container">
+    <div class="card">
+        <div class="card-header bg-dark text-light ml-0 row container">
+            <div class="col-6">
+                @if (User.IsInRole(SD.AdminEndUser))
+                {
+                    <a asp-page="/Users/Index" class="btn btn-outline-info btn-sm">
+                        لیست کاربران
+                    </a>
+                }
+            </div>
+            <div class="col-6 text-right">
+                <i class="fas fa-car"></i>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row" style="padding-bottom: 40px; padding-top: 20px">
+                <div class="col-md-9">
+                    <div class="row" style="padding-bottom: 5px">
+                        <div class="col-md-4 text-right">
+                            <label asp-for="CarAndCustomerViewModel.User.Name"></label>
+                        </div>
+                        <div class="col-md-8">
+                            <input asp-for="CarAndCustomerViewModel.User.Name" disabled class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row" style="padding-bottom: 5px">
+                        <div class="col-md-4 text-right">
+                            <label asp-for="CarAndCustomerViewModel.User.PhoneNumber"></label>
+                        </div>
+                        <div class="col-md-8">
+                            <input asp-for="CarAndCustomerViewModel.User.PhoneNumber" disabled class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row" style="padding-bottom: 5px">
+                        <div class="col-md-4 text-right">
+                            <label asp-for="CarAndCustomerViewModel.User.Email"></label>
+                        </div>
+                        <div class="col-md-8">
+                            <input asp-for="CarAndCustomerViewModel.User.Email" disabled class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <p>
+                        <a asp-page="Create" asp-route-userId="@Model.CarAndCustomerViewModel.User.Id"
+                           class="btn btn-info form-control">
+                            افزودن ماشین جدید
+                        </a>
+                    </p>
+                </div>
+            </div>
+            @if (Model.CarAndCustomerViewModel.Cars.Any())
+            {
+                <table class="table table-striped border">
+                    <tr class="table-secondary">
+                        <th>
+                            @Html.DisplayNameFor(m => m.CarAndCustomerViewModel.Cars.FirstOrDefault().ImageName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.CarAndCustomerViewModel.Cars.FirstOrDefault().Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.CarAndCustomerViewModel.Cars.FirstOrDefault().Model)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.CarAndCustomerViewModel.Cars.FirstOrDefault().Color)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.CarAndCustomerViewModel.Cars.FirstOrDefault().Year)
+                        </th>
+                        <th></th>
+                        @if (User.IsInRole(SD.AdminEndUser))
+                        {
+                            <th></th>
+                        }
+                        <th></th>
+                    </tr>
+                    @foreach (var car in Model.CarAndCustomerViewModel.Cars)
+                    {
+                        <tr>
+                            <td>
+                                <img src="/CarImages/@car.ImageName" style="max-width: 60px" class="img-thumbnail" />
+                            </td>
+                            <td>
+                                @car.Name
+                            </td>
+                            <td>
+                                @car.Model
+                            </td>
+                            <td>
+                                @car.Color
+                            </td>
+                            <td>
+                                @car.Year
+                            </td>
+                            <td>
+                                <a class="btn btn-outline-secondary" asp-page="/Services/History"
+                                   asp-route-carId="@car.Id">
+                                    گزارش سرویس ها
+                                </a>
+                            </td>
+                            @if (User.IsInRole(SD.AdminEndUser))
+                            {
+                                <td>
+                                    <a class="btn btn-outline-success" asp-page="/Services/Create"
+                                       asp-route-carId="@car.Id">
+                                        سرویس جدید
+                                    </a>
+                                </td>
+                            }
+                            <td>
+                                <a class="btn btn-outline-primary" asp-page="Edit"
+                                   asp-route-carId="@car.Id">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a class="btn btn-outline-danger" asp-page="Delete"
+                                   asp-route-carId="@car.Id">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            }
+            else
+            {
+                <p>ماشینی جهت نمایش وجود ندارد .</p>
+            }
+        </div>
+    </div>
+</div>

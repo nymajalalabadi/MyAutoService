@@ -1,0 +1,90 @@
+﻿@page
+@model MyAutoService.Pages.Services.HistoryModel
+@{
+}
+<div class="container pt-4 pb-2 row border">
+    <div class="col-6">
+        <h2 class="text-info py-2">تاریخچه سرویس ها</h2>
+    </div>
+    <div class="col-3 offset-3 text-right py-2">
+        <a asp-page="/Cars/Index" asp-route-userId="@Model.UserId" class="btn btn-outline-success form-control">
+            بازگشت به لیست
+        </a>
+    </div>
+</div>
+
+@if (Model.serviceHeaders.Count == 0)
+{
+    <div class="alert alert-info">
+        تاریخچه ای وجود ندارد .
+    </div>
+}
+else
+{
+    <div class="container pt-5">
+        <div class="card">
+            <div class="card-header bg-dark text-light ml-0 row container">
+                <div class="col-1 text-center pt-3 text-white-50">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="col-5">
+                    <label class="text-info">
+                        @Model.serviceHeaders[0].Car.ApplicationUser.Name
+                    </label>
+                    <br />
+                    <label class="text-info">
+                        @Model.serviceHeaders[0].Car.ApplicationUser.Email / @Model.serviceHeaders[0].Car.ApplicationUser.PhoneNumber
+                    </label>
+                </div>
+                <div class="col-5">
+                    <label class="text-info">
+                        @Model.serviceHeaders[0].Car.Model / @Model.serviceHeaders[0].Car.Color
+                    </label>
+                    <br />
+                    <label class="text-info">
+                        @Model.serviceHeaders[0].Car.Name
+                    </label>
+                </div>
+                <div class="col-1 text-center pt-3 text-white-50">
+                    <i class="fas fa-car"></i>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped border">
+                    <tr class="table-secondary">
+                        <th>
+                            @Html.DisplayNameFor(m => m.serviceHeaders[0].Miles)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.serviceHeaders[0].TotalPrice)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.serviceHeaders[0].Description)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.serviceHeaders[0].DateAdded)
+                        </th>
+                        <th></th>
+                    </tr>
+                    @foreach (var item in Model.serviceHeaders)
+                    {
+                        <tr>
+                            <td>@item.Miles</td>
+                            <td class="text-success">@item.TotalPrice.ToString("#,0 تومان")</td>
+                            <td>
+                                @item.Description
+                            </td>
+                            <td>@item.DateAdded.ToShamsi()</td>
+                            <td>
+                                <a asp-page="Details" class="btn btn-info form-control"
+                                   asp-route-serviceid="@item.Id">
+                                    جزئیات
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,164 @@
+﻿@page
+@model MyAutoService.Pages.Services.CreateModel
+@{
+    ViewData["Title"] = "سرویس جدید";
+}
+
+<div class="container pt-4 pb-2 row">
+    <div class="col-6">
+        <h2 class="text-info py-2">افزودن سرویس جدید</h2>
+    </div>
+    <div class="col-6 text-right">
+        <a asp-page="/Cars/index" asp-route-userId="@Model.CarServiceVM.Car.UserId" class="btn btn-outline-success form-control">بازگشت به لیست</a>
+    </div>
+</div>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header bg-dark text-light ml-0 row container">
+            <div class="col-1 text-center pt-3 text-white-50">
+                <i class="fas fa-user fa-2x"></i>
+            </div>
+            <div class="col-5">
+                <label class="text-info">
+                    @Model.CarServiceVM.Car.ApplicationUser.Name
+                </label><br />
+                <label class="text-info">
+                    @Model.CarServiceVM.Car.ApplicationUser.Email
+                </label>
+            </div>
+            <div class="col-1 text-center pt-3 text-white-50">
+                <i class="fas fa-car fa-2x"></i>
+            </div>
+            <div class="col-5 text-left">
+                <label class="text-info">
+                    @Model.CarServiceVM.Car.Name @Model.CarServiceVM.Car.Model
+                </label><br />
+                <label class="text-info">
+                    @Model.CarServiceVM.Car.Year @Model.CarServiceVM.Car.Color
+                </label>
+            </div>
+
+        </div>
+        <div class="card-body">
+            <form method="post" style="width: 100%">
+                <div class="container">
+                    <input hidden asp-for="CarServiceVM.Car.Model" />
+                    <input hidden asp-for="CarServiceVM.Car.Id" />
+                    <input hidden asp-for="CarServiceVM.Car.UserId" />
+                    <input hidden asp-for="CarServiceVM.Car.Model" />
+                    <input hidden asp-for="CarServiceVM.Car.Name" />
+                    <input hidden asp-for="CarServiceVM.Car.Year" />
+                    <div class="border rounded p-2">
+                        <div class="row">
+                            <div class="col-3">
+                                <h2 class="text-info pl-3 p2-2 pb-1">سرویس جدید</h2>
+                            </div>
+                            <div class="col-9 pb-1 pt-2">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <select asp-for="CarServiceVM.ServiceDetails.ServiceTypeId"
+                                                class="form-control"
+                                                asp-items="@(new SelectList(Model.CarServiceVM.ServiceTypesList,"Id","Name"))">
+
+                                        </select>
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="submit" asp-page-handler="AddToCart" class="form-control btn btn-primary" value="افزودن" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="border container rounded p-2">
+                        <h3 class="text-info pb-2">شرح سرویس ها</h3>
+                        @if (Model.CarServiceVM.ServicesShoppingCarts.Count == 0)
+                        {
+                            <p>سرویسی وجود ندارد</p>
+                        }
+                        else
+                        {
+                            <div class="row mt-3">
+                                <div class="col-7">
+                                    <table class="table table-striped border">
+                                        <tr class="table-secondary">
+                                            <th>@Html.DisplayNameFor(m => Model.CarServiceVM.ServiceTypesList.FirstOrDefault().Name)</th>
+                                            <th>@Html.DisplayNameFor(m => Model.CarServiceVM.ServiceTypesList.FirstOrDefault().Price)</th>
+                                            <th></th>
+                                        </tr>
+                                        @foreach (var item in Model.CarServiceVM.ServicesShoppingCarts)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @item.ServiceType.Name
+                                                </td>
+                                                <td>@item.ServiceType.Price</td>
+                                                <td>
+                                                    <button type="submit"
+                                                            asp-page-handler="RemoveFromCart"
+                                                            asp-route-serviceTypeId="@item.ServiceTypeId"
+                                                            class="btn btn-danger form-control">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        }
+                                        <tr style="background-color: #e2fee2">
+                                            <td colspan="1" class="text-success">
+                                                جمع کل :
+                                            </td>
+                                            <td colspan="2">
+                                                @Model.CarServiceVM.ServiceHeader.TotalPrice.ToString("#,0 تومان")
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-5 px-4 pb-2">
+                                    <div class="row ">
+                                        <div class="col-3 p-0">
+                                            <label asp-for="CarServiceVM.ServiceHeader.Miles"
+                                                   class="form-control" style="border: none"></label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input asp-for="CarServiceVM.ServiceHeader.Miles"
+                                                   class="form-control" id="txtMiles" />
+                                        </div>
+                                    </div>
+                                    <div class="row py-2">
+                                        <div class="col-12">
+                                            <textarea placeholder="توضیحات" asp-for="CarServiceVM.ServiceHeader.Description"
+                                                      class="form-control" style="height: 100px"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <button  onclick="return validateInput()"  class="btn btn-success form-control">
+                                                ثبت سرویس
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        function validateInput() {
+            var miles = document.getElementById("txtMiles").value;
+            if (miles < 1) {
+                swal("خطا !", "کیلومتر را وارد کنید","error");
+                return false;
+            }
+        }
+    </script>
+}
